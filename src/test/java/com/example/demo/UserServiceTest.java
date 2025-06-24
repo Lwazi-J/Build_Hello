@@ -10,27 +10,27 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GreetingServiceTest {
+public class UserServiceTest {
     @InjectMocks
-    private GreetingServiceImpl greetingService;
+    private UserServiceImpl greetingService;
 
     @BeforeEach
     void setUp() {
-        greetingService = new GreetingServiceImpl();
+        greetingService = new UserServiceImpl();
     }
 
-    private Greeting createSampleGreeting(String name, String message) {
-        return greetingService.createGreeting(new GreetingRequest(name, message));
+    private User createSampleGreeting(String name, String message) {
+        return greetingService.createGreeting(new UserRequest(name, message));
     }
 
     @Test
     @DisplayName("Test successful greeting creation")
     void testCreateGreeting_Success() {
         // Given
-        GreetingRequest request = new GreetingRequest("John", "Hello!");
+        UserRequest request = new UserRequest("John", "Hello!");
 
         // When
-        Greeting result = greetingService.createGreeting(request);
+        User result = greetingService.createGreeting(request);
 
         // Then
         assertNotNull(result);
@@ -51,7 +51,7 @@ public class GreetingServiceTest {
     @DisplayName("Test greeting creation with empty name")
     void testCreateGreeting_EmptyName() {
         // Given
-        GreetingRequest request = new GreetingRequest("", "Test message");
+        UserRequest request = new UserRequest("", "Test message");
 
         // When & Then
         Exception exception = assertThrows(IllegalArgumentException.class, () -> greetingService.createGreeting(request));
@@ -62,7 +62,7 @@ public class GreetingServiceTest {
     @DisplayName("Test greeting creation with empty message")
     void testCreateGreeting_EmptyMessage() {
         // Given
-        GreetingRequest request = new GreetingRequest("John", "");
+        UserRequest request = new UserRequest("John", "");
 
         // When & Then
         Exception exception = assertThrows(IllegalArgumentException.class, () -> greetingService.createGreeting(request));
@@ -73,7 +73,7 @@ public class GreetingServiceTest {
     @DisplayName("Test getting all greetings when empty")
     void testGetAllGreetings_EmptyList() {
         // When
-        List<Greeting> results = greetingService.getAllGreetings();
+        List<User> results = greetingService.getAllGreetings();
 
         // Then
         assertTrue(results.isEmpty());
@@ -87,7 +87,7 @@ public class GreetingServiceTest {
         createSampleGreeting("Jane", "Second message");
 
         // When
-        List<Greeting> results = greetingService.getAllGreetings();
+        List<User> results = greetingService.getAllGreetings();
 
         // Then
         assertEquals(2, results.size());
@@ -99,11 +99,11 @@ public class GreetingServiceTest {
     @DisplayName("Test successful greeting update")
     void testUpdateGreeting_Success() {
         // Given
-        Greeting original = createSampleGreeting("John", "Original message");
-        GreetingRequest updateRequest = new GreetingRequest("John Updated", "Updated message");
+        User original = createSampleGreeting("John", "Original message");
+        UserRequest updateRequest = new UserRequest("John Updated", "Updated message");
 
         // When
-        Optional<Greeting> result = greetingService.updateGreeting(original.getId(), updateRequest);
+        Optional<User> result = greetingService.updateGreeting(original.getId(), updateRequest);
 
         // Then
         assertTrue(result.isPresent());
@@ -116,10 +116,10 @@ public class GreetingServiceTest {
     @DisplayName("Test updating non-existent greeting")
     void testUpdateGreeting_NotFound() {
         // Given
-        GreetingRequest updateRequest = new GreetingRequest("John", "Test");
+        UserRequest updateRequest = new UserRequest("John", "Test");
 
         // When
-        Optional<Greeting> result = greetingService.updateGreeting("999", updateRequest);
+        Optional<User> result = greetingService.updateGreeting("999", updateRequest);
 
         // Then
         assertTrue(result.isEmpty());
@@ -129,7 +129,7 @@ public class GreetingServiceTest {
     @DisplayName("Test successful greeting deletion")
     void testDeleteGreeting_Success() {
         // Given
-        Greeting greeting = createSampleGreeting("John", "Test message");
+        User greeting = createSampleGreeting("John", "Test message");
 
         // When
         boolean result = greetingService.deleteGreeting(greeting.getId());
@@ -153,10 +153,10 @@ public class GreetingServiceTest {
     @DisplayName("Test getting existing greeting by ID")
     void testGetGreetingById_Success() {
         // Given
-        Greeting created = createSampleGreeting("John", "Test message");
+        User created = createSampleGreeting("John", "Test message");
 
         // When
-        Optional<Greeting> result = greetingService.getGreetingById(created.getId());
+        Optional<User> result = greetingService.getGreetingById(created.getId());
 
         // Then
         assertTrue(result.isPresent());
@@ -168,7 +168,7 @@ public class GreetingServiceTest {
     @DisplayName("Test getting non-existent greeting by ID")
     void testGetGreetingById_NotFound() {
         // When
-        Optional<Greeting> result = greetingService.getGreetingById("999");
+        Optional<User> result = greetingService.getGreetingById("999");
 
         // Then
         assertTrue(result.isEmpty());
@@ -178,9 +178,9 @@ public class GreetingServiceTest {
     @DisplayName("Test sequential ID generation")
     void testSequentialIdGeneration() {
         // When
-        Greeting first = createSampleGreeting("John", "First");
-        Greeting second = createSampleGreeting("Jane", "Second");
-        Greeting third = createSampleGreeting("Bob", "Third");
+        User first = createSampleGreeting("John", "First");
+        User second = createSampleGreeting("Jane", "Second");
+        User third = createSampleGreeting("Bob", "Third");
 
         // Then
         assertEquals("1", first.getId());
@@ -196,7 +196,7 @@ public class GreetingServiceTest {
         String message = "Test message";
 
         // When
-        Greeting greeting = createSampleGreeting(name, message);
+        User greeting = createSampleGreeting(name, message);
 
         // Then
         String expectedFormat = String.format("Hello %s! Your message: %s", name, message);

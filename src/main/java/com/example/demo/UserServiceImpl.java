@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -9,29 +8,29 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class GreetingServiceImpl implements GreetingService{
+public class UserServiceImpl implements UserService {
 
-    private final List<Greeting> greetings = new ArrayList<>();
-    private static final Logger log = LoggerFactory.getLogger(GreetingServiceImpl.class);
+    private final List<User> greetings = new ArrayList<>();
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
-    public List<Greeting> getAllGreetings() {
+    public List<User> getAllGreetings() {
         log.info("Retrieving all greetings");
         return new ArrayList<>(greetings);
     }
 
     @Override
-    public Optional<Greeting> getGreetingById(String id) {
+    public Optional<User> getGreetingById(String id) {
         log.info("Retrieving greeting with id: {}", id);
         return greetings.stream().filter(g -> g.getId().equals(id)).findFirst();
     }
 
     @Override
-    public Greeting createGreeting(GreetingRequest request) {
+    public User createGreeting(UserRequest request) {
         validateRequest(request);
 
         String id = String.valueOf(greetings.size() + 1);
-        Greeting greeting = new Greeting(id, String.format("Hello %s! Your message: %s", request.getName(), request.getMessage()));
+        User greeting = new User(id, String.format("Hello %s! Your message: %s", request.getName(), request.getMessage()));
 
         log.info("Creating new greeting with id: {}", id);
         greetings.add(greeting);
@@ -39,17 +38,17 @@ public class GreetingServiceImpl implements GreetingService{
     }
 
     @Override
-    public Optional<Greeting> updateGreeting(String id, GreetingRequest request) {
+    public Optional<User> updateGreeting(String id, UserRequest request) {
         validateRequest(request);
 
-        Optional<Greeting> existingGreeting = getGreetingById(id);
+        Optional<User> existingGreeting = getGreetingById(id);
         if (existingGreeting.isEmpty()) {
             log.warn("Attempted to update non-existent greeting with id: {}", id);
             return Optional.empty();
         }
 
         int index = greetings.indexOf(existingGreeting.get());
-        Greeting updatedGreeting = new Greeting(id, String.format("Hello %s! Your updated message: %s", request.getName(), request.getMessage()));
+        User updatedGreeting = new User(id, String.format("Hello %s! Your updated message: %s", request.getName(), request.getMessage()));
 
         log.info("Updating greeting with id: {}", id);
         greetings.set(index, updatedGreeting);
@@ -58,7 +57,7 @@ public class GreetingServiceImpl implements GreetingService{
 
     @Override
     public boolean deleteGreeting(String id) {
-        Optional<Greeting> greeting = getGreetingById(id);
+        Optional<User> greeting = getGreetingById(id);
         if (greeting.isEmpty()) {
             log.warn("Attempted to delete non-existent greeting with id: {}", id);
             return false;
@@ -68,7 +67,7 @@ public class GreetingServiceImpl implements GreetingService{
         return greetings.remove(greeting.get());
     }
 
-    private void validateRequest(GreetingRequest request) {
+    private void validateRequest(UserRequest request) {
         if (request == null) {
             log.error("Request is null");
             throw new IllegalArgumentException("Request cannot be null");

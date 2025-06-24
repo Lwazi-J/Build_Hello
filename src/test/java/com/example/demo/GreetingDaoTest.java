@@ -3,7 +3,6 @@ package com.example.demo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,21 +11,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GreetingDaoTest {
 
-    private GreetingDao greetingDao;
+    private UserDAO userDAO;
 
     @BeforeEach
     void setUp() {
-        greetingDao = new GreetingDaoImpl();
+        userDAO = new UserDaoImpl();
     }
 
     @Test
     @DisplayName("Test save greeting")
     void testSave() {
         // Given
-        Greeting greeting = new Greeting(null, "Test message", "Test Name");
+        User greeting = new User(null, "Test message", "Test Name");
 
         // When
-        Greeting saved = greetingDao.save(greeting);
+        User saved = userDAO.save(greeting);
 
         // Then
         assertNotNull(saved);
@@ -39,11 +38,11 @@ public class GreetingDaoTest {
     @DisplayName("Test find all greetings")
     void testFindAll() {
         // Given
-        greetingDao.save(new Greeting(null, "First message", "First Name"));
-        greetingDao.save(new Greeting(null, "Second message", "Second Name"));
+        userDAO.save(new User(null, "First message", "First Name"));
+        userDAO.save(new User(null, "Second message", "Second Name"));
 
         // When
-        List<Greeting> results = greetingDao.findAll();
+        List<User> results = userDAO.findAll();
 
         // Then
         assertEquals(2, results.size());
@@ -57,10 +56,10 @@ public class GreetingDaoTest {
     @DisplayName("Test find greeting by ID")
     void testFindById() {
         // Given
-        Greeting saved = greetingDao.save(new Greeting(null, "Test message", "Test Name"));
+        User saved = userDAO.save(new User(null, "Test message", "Test Name"));
 
         // When
-        Optional<Greeting> found = greetingDao.findById(saved.getId());
+        Optional<User> found = userDAO.findById(saved.getId());
 
         // Then
         assertTrue(found.isPresent());
@@ -73,7 +72,7 @@ public class GreetingDaoTest {
     @DisplayName("Test find non-existent greeting")
     void testFindById_NotFound() {
         // When
-        Optional<Greeting> result = greetingDao.findById("999");
+        Optional<User> result = userDAO.findById("999");
 
         // Then
         assertTrue(result.isEmpty());
@@ -83,11 +82,11 @@ public class GreetingDaoTest {
     @DisplayName("Test update greeting")
     void testUpdate() {
         // Given
-        Greeting original = greetingDao.save(new Greeting(null, "Original message", "Original Name"));
-        Greeting updated = new Greeting(original.getId(), "Updated message", "Updated Name");
+        User original = userDAO.save(new User(null, "Original message", "Original Name"));
+        User updated = new User(original.getId(), "Updated message", "Updated Name");
 
         // When
-        Optional<Greeting> result = greetingDao.update(original.getId(), updated);
+        Optional<User> result = userDAO.update(original.getId(), updated);
 
         // Then
         assertTrue(result.isPresent());
@@ -100,10 +99,10 @@ public class GreetingDaoTest {
     @DisplayName("Test update non-existent greeting")
     void testUpdate_NotFound() {
         // Given
-        Greeting updated = new Greeting("999", "Updated message", "Updated Name");
+        User updated = new User("999", "Updated message", "Updated Name");
 
         // When
-        Optional<Greeting> result = greetingDao.update("999", updated);
+        Optional<User> result = userDAO.update("999", updated);
 
         // Then
         assertTrue(result.isEmpty());
@@ -113,21 +112,21 @@ public class GreetingDaoTest {
     @DisplayName("Test delete greeting")
     void testDelete() {
         // Given
-        Greeting saved = greetingDao.save(new Greeting(null, "Test message", "Test Name"));
+        User saved = userDAO.save(new User(null, "Test message", "Test Name"));
 
         // When
-        boolean deleted = greetingDao.delete(saved.getId());
+        boolean deleted = userDAO.delete(saved.getId());
 
         // Then
         assertTrue(deleted);
-        assertTrue(greetingDao.findAll().isEmpty());
+        assertTrue(userDAO.findAll().isEmpty());
     }
 
     @Test
     @DisplayName("Test delete non-existent greeting")
     void testDelete_NotFound() {
         // When
-        boolean result = greetingDao.delete("999");
+        boolean result = userDAO.delete("999");
 
         // Then
         assertFalse(result);
@@ -137,20 +136,20 @@ public class GreetingDaoTest {
     @DisplayName("Test exists")
     void testExists() {
         // Given
-        Greeting saved = greetingDao.save(new Greeting(null, "Test message", "Test Name"));
+        User saved = userDAO.save(new User(null, "Test message", "Test Name"));
 
         // When & Then
-        assertTrue(greetingDao.exists(saved.getId()));
-        assertFalse(greetingDao.exists("999"));
+        assertTrue(userDAO.exists(saved.getId()));
+        assertFalse(userDAO.exists("999"));
     }
 
     @Test
     @DisplayName("Test sequential ID generation")
     void testSequentialIdGeneration() {
         // When
-        Greeting first = greetingDao.save(new Greeting(null, "First", "First Name"));
-        Greeting second = greetingDao.save(new Greeting(null, "Second", "Second Name"));
-        Greeting third = greetingDao.save(new Greeting(null, "Third", "Third Name"));
+        User first = userDAO.save(new User(null, "First", "First Name"));
+        User second = userDAO.save(new User(null, "Second", "Second Name"));
+        User third = userDAO.save(new User(null, "Third", "Third Name"));
 
         // Then
         assertEquals("1", first.getId());

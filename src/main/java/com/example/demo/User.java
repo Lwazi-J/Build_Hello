@@ -1,23 +1,23 @@
 package com.example.demo;
 import java.util.Objects;
 
-public class Greeting {
+public class User {
     private String id;
     private String message;
     private String name;
 
     // Default constructor for deserialization
-    public Greeting() {
+    public User() {
     }
 
     // Two-parameter constructor
-    public Greeting(String id, String message) {
+    public User(String id, String message) {
         this.id = id;
         this.message = message;
     }
 
     // Three-parameter constructor
-    public Greeting(String id, String message, String name) {
+    public User(String id, String message, String name) {
         this.id = id;
         this.message = message;
         this.name = name;
@@ -59,7 +59,7 @@ public class Greeting {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Greeting greeting = (Greeting) o;
+        User greeting = (User) o;
         return Objects.equals(id, greeting.id) && Objects.equals(message, greeting.message) && Objects.equals(name, greeting.name);
     }
 

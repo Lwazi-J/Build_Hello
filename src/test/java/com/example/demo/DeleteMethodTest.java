@@ -20,8 +20,8 @@ public class DeleteMethodTest {
     /**
      * Helper method to create a sample greeting
      */
-    private Greeting createSampleGreeting(String name, String message) {
-        GreetingRequest request = new GreetingRequest(name, message);
+    private User createSampleGreeting(String name, String message) {
+        UserRequest request = new UserRequest(name, message);
         return helloController.createGreeting(request);
     }
 
@@ -32,7 +32,7 @@ public class DeleteMethodTest {
     @Test
     void testDeleteGreeting() {
         // Given
-        Greeting greeting = createSampleGreeting("John", "Test message");
+        User greeting = createSampleGreeting("John", "Test message");
 
         // When
         ResponseEntity<Void> deleteResponse = helloController.deleteGreeting(greeting.getId());
@@ -40,7 +40,7 @@ public class DeleteMethodTest {
         // Then
         assertTrue(deleteResponse.getStatusCode().is2xxSuccessful(), "Delete should return successful status");
 
-        List<Greeting> remainingGreetings = helloController.getAllGreetings();
+        List<User> remainingGreetings = helloController.getAllGreetings();
         assertTrue(remainingGreetings.isEmpty(), "Greeting list should be empty after deletion");
     }
 

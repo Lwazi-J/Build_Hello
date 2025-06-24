@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 
-public class GreetingDaoImpl implements GreetingDao {
+public class UserDaoImpl implements UserDAO {
 
-    private final List<Greeting> greetings = Collections.synchronizedList(new ArrayList<>());
-    private static final Logger log = LoggerFactory.getLogger(GreetingDaoImpl.class);
+    private final List<User> greetings = Collections.synchronizedList(new ArrayList<>());
+    private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
 
     @Override
-    public List<Greeting> findAll() {
+    public List<User> findAll() {
         log.debug("Finding all greetings");
         synchronized(greetings) {
             return new ArrayList<>(greetings);
@@ -21,7 +21,7 @@ public class GreetingDaoImpl implements GreetingDao {
     }
 
     @Override
-    public Optional<Greeting> findById(String id) {
+    public Optional<User> findById(String id) {
         log.debug("Finding greeting with id: {}", id);
         synchronized(greetings) {
             return greetings.stream().filter(g -> g.getId().equals(id)).findFirst();
@@ -29,27 +29,27 @@ public class GreetingDaoImpl implements GreetingDao {
     }
 
     @Override
-    public Greeting save(Greeting greeting) {
+    public User save(User greeting) {
         log.debug("Saving new greeting: {}", greeting);
         synchronized(greetings) {
             String id = String.valueOf(greetings.size() + 1);
-            Greeting newGreeting = new Greeting(id, greeting.getMessage(), greeting.getName()); // Include the name field
+            User newGreeting = new User(id, greeting.getMessage(), greeting.getName()); // Include the name field
             greetings.add(newGreeting);
             return newGreeting;
         }
     }
 
     @Override
-    public Optional<Greeting> update(String id, Greeting greeting) {
+    public Optional<User> update(String id, User greeting) {
         log.debug("Updating greeting with id: {}", id);
         synchronized(greetings) {
-            Optional<Greeting> existingGreeting = findById(id);
+            Optional<User> existingGreeting = findById(id);
             if (existingGreeting.isEmpty()) {
                 return Optional.empty();
             }
 
             int index = greetings.indexOf(existingGreeting.get());
-            Greeting updatedGreeting = new Greeting(id, greeting.getMessage(), greeting.getName());  // Include the name field
+            User updatedGreeting = new User(id, greeting.getMessage(), greeting.getName());  // Include the name field
 
             greetings.set(index, updatedGreeting);
             return Optional.of(updatedGreeting);

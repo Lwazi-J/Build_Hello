@@ -17,8 +17,8 @@ public class PostMethodTest {
     /**
      * Helper method to create a sample greeting
      */
-    private Greeting createSampleGreeting(String name, String message) {
-        GreetingRequest request = new GreetingRequest(name, message);
+    private User createSampleGreeting(String name, String message) {
+        UserRequest request = new UserRequest(name, message);
         return helloController.createGreeting(request);
     }
 
@@ -30,10 +30,10 @@ public class PostMethodTest {
         // Given
         String name = "John";
         String message = "Good morning!";
-        GreetingRequest request = new GreetingRequest(name, message);
+        UserRequest request = new UserRequest(name, message);
 
         // When
-        Greeting response = helloController.createGreeting(request);
+        User response = helloController.createGreeting(request);
 
         // Then
         assertNotNull(response, "Response should not be null");
@@ -48,9 +48,9 @@ public class PostMethodTest {
     @Test
     void testCreateGreetingSequentialIds() {
         // When
-        Greeting first = createSampleGreeting("John", "First");
-        Greeting second = createSampleGreeting("Jane", "Second");
-        Greeting third = createSampleGreeting("Bob", "Third");
+        User first = createSampleGreeting("John", "First");
+        User second = createSampleGreeting("Jane", "Second");
+        User third = createSampleGreeting("Bob", "Third");
 
         // Then
         assertEquals("1", first.getId(), "First greeting should have ID 1");

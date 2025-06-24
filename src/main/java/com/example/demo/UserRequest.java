@@ -1,13 +1,13 @@
 package com.example.demo;
 
-public class GreetingRequest {
+public class UserRequest {
     private String name;
     private String message;
 
-    public GreetingRequest() {
+    public UserRequest() {
     }
 
-    public GreetingRequest(String name, String message) {
+    public UserRequest(String name, String message) {
         this.name = name;
         this.message = message;
     }

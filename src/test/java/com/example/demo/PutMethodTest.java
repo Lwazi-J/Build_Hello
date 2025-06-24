@@ -19,8 +19,8 @@ public class PutMethodTest {
     /**
      * Helper method to create a sample greeting
      */
-    private Greeting createSampleGreeting(String name, String message) {
-        GreetingRequest request = new GreetingRequest(name, message);
+    private User createSampleGreeting(String name, String message) {
+        UserRequest request = new UserRequest(name, message);
         return helloController.createGreeting(request);
     }
 
@@ -30,13 +30,13 @@ public class PutMethodTest {
     @Test
     void testUpdateGreeting() {
         // Given
-        Greeting original = createSampleGreeting("John", "Initial message");
+        User original = createSampleGreeting("John", "Initial message");
         String updatedName = "John Smith";
         String updatedMessage = "Updated message";
 
         // When
-        GreetingRequest updateRequest = new GreetingRequest(updatedName, updatedMessage);
-        ResponseEntity<Greeting> response = helloController.updateGreeting(original.getId(), updateRequest);
+        UserRequest updateRequest = new UserRequest(updatedName, updatedMessage);
+        ResponseEntity<User> response = helloController.updateGreeting(original.getId(), updateRequest);
 
         // Then
         assertTrue(response.getStatusCode().is2xxSuccessful(), "Update should return successful status");

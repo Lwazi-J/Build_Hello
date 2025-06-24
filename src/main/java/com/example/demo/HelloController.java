@@ -14,13 +14,13 @@ import java.util.*;
 @Validated
 public class HelloController {
 
-    private final List<Greeting> greetings = Collections.synchronizedList(new ArrayList<>());
+    private final List<User> greetings = Collections.synchronizedList(new ArrayList<>());
 
-    private Optional<Greeting> findGreetingById(String id) {
+    private Optional<User> findGreetingById(String id) {
         return greetings.stream().filter(g -> g.getId() != null && g.getId().equals(id)).findFirst();
     }
 
-    private Optional<Greeting> findGreetingByName(String name) {
+    private Optional<User> findGreetingByName(String name) {
         return greetings.stream().filter(g -> g.getName() != null && g.getName().equals(name)).findFirst();
     }
 
@@ -38,31 +38,31 @@ public class HelloController {
     }
 
     @GetMapping("/hello/all")
-    public List<Greeting> getAllGreetings() {
+    public List<User> getAllGreetings() {
         return new ArrayList<>(greetings);
     }
 
     @PostMapping("/hello")
-    public Greeting createGreeting(@Valid @RequestBody GreetingRequest request) {
+    public User createGreeting(@Valid @RequestBody UserRequest request) {
         // Validate input
         if (request.getName() == null || request.getMessage() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Name and message are required");
         }
 
         // Format the message to include both name and message content
-        Greeting greeting = new Greeting(String.valueOf(greetings.size() + 1), request.getMessage(), request.getName());
+        User greeting = new User(String.valueOf(greetings.size() + 1), request.getMessage(), request.getName());
         greetings.add(greeting);
         return greeting;
     }
 
     @PutMapping("/hello/{id}")
-    public ResponseEntity<Greeting> updateGreeting(
+    public ResponseEntity<User> updateGreeting(
             @PathVariable
             @Pattern(regexp = "[a-zA-Z0-9\\s]+", message = "ID can only contain alphanumeric characters")
             String id,
-            @Valid @RequestBody GreetingRequest request) {
+            @Valid @RequestBody UserRequest request) {
 
-        Optional<Greeting> greetingOpt = findGreetingById(id);
+        Optional<User> greetingOpt = findGreetingById(id);
 
         if (greetingOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -77,28 +77,28 @@ public class HelloController {
         String formattedMessage = String.format("Hello %s! Your message: %s", request.getName(), request.getMessage());
 
         int index = greetings.indexOf(greetingOpt.get());
-        Greeting updatedGreeting = new Greeting(id, formattedMessage,request.getName()); // Use the formatted message
+        User updatedGreeting = new User(id, formattedMessage,request.getName()); // Use the formatted message
 
         greetings.set(index, updatedGreeting);
         return ResponseEntity.ok(updatedGreeting);
     }
     // Additional PUT endpoint for Cucumber tests with name
     @PutMapping("/hello/name/{name}")
-    public ResponseEntity<Greeting> updateGreetingByName(@PathVariable String name, @RequestBody GreetingRequest request) {
-        Optional<Greeting> greetingOpt = findGreetingByName(name);
+    public ResponseEntity<User> updateGreetingByName(@PathVariable String name, @RequestBody UserRequest request) {
+        Optional<User> greetingOpt = findGreetingByName(name);
 
         if (greetingOpt.isEmpty()) {
             // If not found, create a new greeting with this name
-            Greeting newGreeting = new Greeting(String.valueOf(greetings.size() + 1), request.getMessage(), request.getName());
+            User newGreeting = new User(String.valueOf(greetings.size() + 1), request.getMessage(), request.getName());
             greetings.add(newGreeting);
             return ResponseEntity.ok(newGreeting);
         }
 
         // If found, update it
-        Greeting existingGreeting = greetingOpt.get();
+        User existingGreeting = greetingOpt.get();
         int index = greetings.indexOf(existingGreeting);
 
-        Greeting updatedGreeting = new Greeting(existingGreeting.getId(), request.getMessage(), request.getName());
+        User updatedGreeting = new User(existingGreeting.getId(), request.getMessage(), request.getName());
 
         greetings.set(index, updatedGreeting);
         return ResponseEntity.ok(updatedGreeting);
@@ -106,7 +106,7 @@ public class HelloController {
 
     @DeleteMapping("/hello/{id}")
     public ResponseEntity<Void> deleteGreeting(@PathVariable String id) {
-        Optional<Greeting> greetingOpt = findGreetingById(id);
+        Optional<User> greetingOpt = findGreetingById(id);
 
         if (greetingOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -119,7 +119,7 @@ public class HelloController {
     // Additional DELETE endpoint for Cucumber tests with name
     @DeleteMapping("/hello/name/{name}")
     public ResponseEntity<Void> deleteGreetingByName(@PathVariable String name) {
-        Optional<Greeting> greetingOpt = findGreetingByName(name);
+        Optional<User> greetingOpt = findGreetingByName(name);
 
         if (greetingOpt.isEmpty()) {
             // For the Cucumber test to pass
