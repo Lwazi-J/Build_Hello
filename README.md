@@ -12,6 +12,9 @@ This project is a simple Spring Boot application that demonstrates basic REST AP
 7. [Project Structure](#project-structure)
 8. [Troubleshooting](#troubleshooting)
 
+   <a href='https://coveralls.io/github/Lwazi-J/Build_Hello?branch=master'><img src='https://coveralls.io/repos/github/Lwazi-J/Build_Hello/badge.svg?branch=master' alt='Coverage Status' /></a>
+
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
